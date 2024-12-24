@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Button from "../Button/Button";
 import styles from "./JournalForm.module.css";
+import cn from "classname";
 
 function JournalForm({ onSubmit }) {
   const [formValidState, setFormValidState] = useState({
@@ -20,34 +21,54 @@ function JournalForm({ onSubmit }) {
     if (!formProps.title?.trim().length) {
       setFormValidState((state) => ({ ...state, title: false }));
       isFormValid = false;
-    }else{
+    } else {
       setFormValidState((state) => ({ ...state, title: true }));
     }
     if (!formProps.post?.trim().length) {
       setFormValidState((state) => ({ ...state, post: false }));
       isFormValid = false;
-    }else{
+    } else {
       setFormValidState((state) => ({ ...state, post: true }));
     }
     if (!formProps.date) {
       setFormValidState((state) => ({ ...state, date: false }));
       isFormValid = false;
-    }else{
+    } else {
       setFormValidState((state) => ({ ...state, date: true }));
     }
     if (!isFormValid) {
-      return
+      return;
     }
     onSubmit(formProps);
   };
 
   return (
     <>
-      <form className={styles['journal-form']} onSubmit={addJurnalItem}>
-        <input type="title" name="title" className={`${styles['input']} ${formValidState.title? '': styles['invalid']}`} />
-        <input type="date" name="date"  className={`${styles['input']} ${formValidState.date? '': styles['invalid']}`} />
+      <form className={styles["journal-form"]} onSubmit={addJurnalItem}>
+        <input
+          type="title"
+          name="title"
+          className={cn(styles["input"], {
+            [styles["invalid"]]: !formValidState.title,
+          })}
+        />
+        <input
+          type="date"
+          name="date"
+          className={`${styles["input"]} ${
+            formValidState.date ? "" : styles["invalid"]
+          }`}
+        />
         <input type="text" name="tag" />
-        <textarea name="post" id="" cols="30" rows="10" className={`${styles['input']} ${formValidState.post? '': styles['invalid']}`} ></textarea>
+        <textarea
+          name="post"
+          id=""
+          cols="30"
+          rows="10"
+          className={`${styles["input"]} ${
+            formValidState.post ? "" : styles["invalid"]
+          }`}
+        ></textarea>
         <Button text="Сохранить" />
       </form>
     </>
