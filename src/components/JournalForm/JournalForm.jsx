@@ -45,29 +45,46 @@ function JournalForm({ onSubmit }) {
   return (
     <>
       <form className={styles["journal-form"]} onSubmit={addJurnalItem}>
-        <input
-          type="title"
-          name="title"
-          className={cn(styles["input"], {
-            [styles["invalid"]]: !formValidState.title,
-          })}
-        />
-        <input
-          type="date"
-          name="date"
-          className={`${styles["input"]} ${
-            formValidState.date ? "" : styles["invalid"]
-          }`}
-        />
-        <input type="text" name="tag" />
+        <div>
+          <input
+            type="title"
+            name="title"
+            className={cn(styles["input-title"], {
+              [styles["invalid"]]: !formValidState.title,
+            })}
+          />
+        </div>
+
+        <div className={styles["form-row"]}>
+          <label htmlFor="date" className={styles["form-label"]}>
+            <img src="/public/calendar.svg" alt="#" />
+            <span>Дата</span>
+          </label>
+          <input
+            id="date"
+            type="date"
+            name="date"
+            className={cn(styles["input"], {
+              [styles["invalid"]]: !formValidState.date,
+            })}
+          />
+        </div>
+        <div className={styles["form-row"]}>
+          <label htmlFor="tag" className={styles["form-label"]}>
+            <img src="/public/folder.svg" alt="#" />
+            <span>Метки</span>
+          </label>
+          <input type="text" id="tag" name="tag" className={styles["input"]} />
+        </div>
+
         <textarea
           name="post"
           id=""
           cols="30"
           rows="10"
-          className={`${styles["input"]} ${
-            formValidState.post ? "" : styles["invalid"]
-          }`}
+          className={cn(styles["input"], {
+            [styles["invalid"]]: !formValidState.post,
+          })}
         ></textarea>
         <Button text="Сохранить" />
       </form>
