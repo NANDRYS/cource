@@ -1,10 +1,7 @@
- import './Header.css'
+import styles from "./Header.module.css";
 
- function Header({children}) {
+function Header({ children }) {
+  return <p className={styles.logo}>Логотип какой-то я хз</p>;
+}
 
-   return (
-      <p className='logo'>Логотип какой-то я хз</p>
-      )
-   }
-
- export default Header
+export default Header;
