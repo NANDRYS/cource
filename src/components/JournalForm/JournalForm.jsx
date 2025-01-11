@@ -3,6 +3,7 @@ import Button from "../Button/Button";
 import styles from "./JournalForm.module.css";
 import cn from "classname";
 import { formReducer, INITIAL_STATE } from "./JournalForm.state";
+import Input from "../Input/Input";
 
 function JournalForm({ onSubmit }) {
   const [formState, dispatchForm] = useReducer(formReducer, INITIAL_STATE);
@@ -17,10 +18,10 @@ function JournalForm({ onSubmit }) {
       case !isValid.title:
         titleRef.current.focus();
         break;
-        case !isValid.date:
+      case !isValid.date:
         dateRef.current.focus();
         break;
-        case !isValid.post:
+      case !isValid.post:
         postRef.current.focus();
         break;
     }
@@ -63,12 +64,14 @@ function JournalForm({ onSubmit }) {
     <>
       <form className={styles["journal-form"]} onSubmit={addJurnalItem}>
         <div>
-          <input
+          <Input
             onChange={onChanges}
             value={values.title}
             type="title"
+            isValid={isValid.title}
             ref={titleRef}
             name="title"
+            apperance="title"
             className={cn(styles["input-title"], {
               [styles["invalid"]]: !isValid.title,
             })}
@@ -80,11 +83,13 @@ function JournalForm({ onSubmit }) {
             <img src="/public/calendar.svg" alt="#" />
             <span>Дата</span>
           </label>
-          <input
+          <Input
             onChange={onChanges}
             id="date"
+            apperance="date"
             value={values.date}
             type="date"
+            isValid={isValid.date}
             ref={dateRef}
             name="date"
             className={cn(styles["input"], {
@@ -97,7 +102,7 @@ function JournalForm({ onSubmit }) {
             <img src="/public/folder.svg" alt="#" />
             <span>Метки</span>
           </label>
-          <input
+          <Input
             onChange={onChanges}
             value={values.tag}
             type="text"
