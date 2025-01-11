@@ -1,46 +1,47 @@
 import "./index.css";
 import "./App.css";
 
-
 import LeftPanel from "./components/layouts/LeftPanel/LeftPanel.jsx";
 import Body from "./components/layouts/Body/Body.jsx";
 import Header from "./components/Header/Header.jsx";
 import JournalList from "./components/JournalList/JournalList.jsx";
 import JournalAddButton from "./components/JournalAddButton/JournalAddButton.jsx";
 import JournalForm from "./components/JournalForm/JournalForm.jsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
-  const INITIAL_DATA = [
-    // {
-    //   id: 1,
-    //   title: "Подготовка к обновлению курсов",
-    //   text: "Горные походы открывают удивительные природные ландшафты!",
-    //   date: new Date(),
-    // },
-    // {
-    //   id: 2,
-    //   title: "gпоход в горы",
-    //   text: "Думал, что очень много времени",
-    //   date: new Date(),
-    // },
-  ];
+  const [items, setItems] = useState([]);
 
-  const [items, setItems] = useState(INITIAL_DATA);
-  
+  useEffect(() => {
+    const dataas = JSON.parse(localStorage.getItem("data"));
+    if (dataas) {
+      setItems(
+        dataas.map((item) => ({
+          ...item,
+          date: new Date(item.date),
+        }))
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    if (items.length) {
+      console.log("запись");
+      localStorage.setItem("data", JSON.stringify(items));
+    }
+  }, [items]);
+
   const addItem = (item) => {
     setItems((oldItems) => [
       ...oldItems,
       {
-        text: item.post,
+        post: item.post,
         title: item.title,
         date: new Date(item.date),
-        id: oldItems > 0 ?  Math.max(...(oldItems.map((i) => i.id) + 1)) : 1 ,
+        id: oldItems.length > 0 ? oldItems.length + 1 : 1,
       },
     ]);
   };
-
-
 
   return (
     <div className="app">
