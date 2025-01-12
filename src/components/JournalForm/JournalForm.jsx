@@ -4,6 +4,7 @@ import styles from "./JournalForm.module.css";
 import cn from "classname";
 import { formReducer, INITIAL_STATE } from "./JournalForm.state";
 import Input from "../Input/Input";
+import { UserContext } from "../../context/user.context";
 
 function JournalForm({ onSubmit }) {
   const [formState, dispatchForm] = useReducer(formReducer, INITIAL_STATE);
@@ -61,72 +62,75 @@ function JournalForm({ onSubmit }) {
   };
 
   return (
-    <>
-      <form className={styles["journal-form"]} onSubmit={addJurnalItem}>
-        <div>
-          <Input
-            onChange={onChanges}
-            value={values.title}
-            type="title"
-            isValid={isValid.title}
-            ref={titleRef}
-            name="title"
-            apperance="title"
-            className={cn(styles["input-title"], {
-              [styles["invalid"]]: !isValid.title,
-            })}
-          />
-        </div>
+    <UserContext.Consumer>
+      {(context) => (
+        <form className={styles["journal-form"]} onSubmit={addJurnalItem}>
+          {context.userId}
+          <div>
+            <Input
+              onChange={onChanges}
+              value={values.title}
+              type="title"
+              isValid={isValid.title}
+              ref={titleRef}
+              name="title"
+              apperance="title"
+              className={cn(styles["input-title"], {
+                [styles["invalid"]]: !isValid.title,
+              })}
+            />
+          </div>
 
-        <div className={styles["form-row"]}>
-          <label htmlFor="date" className={styles["form-label"]}>
-            <img src="/public/calendar.svg" alt="#" />
-            <span>Дата</span>
-          </label>
-          <Input
+          <div className={styles["form-row"]}>
+            <label htmlFor="date" className={styles["form-label"]}>
+              <img src="/public/calendar.svg" alt="#" />
+              <span>Дата</span>
+            </label>
+            <Input
+              onChange={onChanges}
+              id="date"
+              apperance="date"
+              value={values.date}
+              type="date"
+              isValid={isValid.date}
+              ref={dateRef}
+              name="date"
+              className={cn(styles["input"], {
+                [styles["invalid"]]: !isValid.date,
+              })}
+            />
+          </div>
+          <div className={styles["form-row"]}>
+            <label htmlFor="tag" className={styles["form-label"]}>
+              <img src="/public/folder.svg" alt="#" />
+              <span>Метки</span>
+            </label>
+            <Input
+              onChange={onChanges}
+              value={values.tag}
+              type="text"
+              id="tag"
+              name="tag"
+              className={styles["input"]}
+            />
+          </div>
+
+          <textarea
             onChange={onChanges}
-            id="date"
-            apperance="date"
-            value={values.date}
-            type="date"
-            isValid={isValid.date}
-            ref={dateRef}
-            name="date"
+            value={values.post}
+            name="post"
+            ref={postRef}
+            id=""
+            cols="30"
+            rows="10"
             className={cn(styles["input"], {
-              [styles["invalid"]]: !isValid.date,
+              [styles["invalid"]]: !isValid.post,
             })}
-          />
-        </div>
-        <div className={styles["form-row"]}>
-          <label htmlFor="tag" className={styles["form-label"]}>
-            <img src="/public/folder.svg" alt="#" />
-            <span>Метки</span>
-          </label>
-          <Input
-            onChange={onChanges}
-            value={values.tag}
-            type="text"
-            id="tag"
-            name="tag"
-            className={styles["input"]}
-          />
-        </div>
-
-        <textarea
-          onChange={onChanges}
-          value={values.post}
-          name="post"
-          ref={postRef}
-          id=""
-          cols="30"
-          rows="10"
-          className={cn(styles["input"], {
-            [styles["invalid"]]: !isValid.post,
-          })}
-        ></textarea>
-        <Button text="Сохранить" />
-      </form>
-    </>
+          ></textarea>
+          <Button text="Сохранить" />
+        </form>
+      )}
+    </UserContext.Consumer>
   );
 }
 export default JournalForm;
