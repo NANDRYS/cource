@@ -37,3 +37,13 @@
     border: 1px solid red;
     background-color: rgb(104, 18, 18);
 }
+
+.delete {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.delete:hover {
+    border-bottom: 1px solid white;
+}

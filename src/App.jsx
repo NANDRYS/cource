@@ -20,7 +20,7 @@ function mapItems(items) {
 }
 
 function App() {
-  const [selectedItem, setSelectedItem] = useState({});
+  const [selectedItem, setSelectedItem] = useState(null);
   const [items, setItems] = useLocalStorage("data");
 
   const addItem = (item) => {
@@ -38,7 +38,7 @@ function App() {
         ...mapItems(items).map((i) => {
           if (i.id === item.id) {
             return {
-              ...item
+              ...item,
             };
           }
           return i;
@@ -46,17 +46,24 @@ function App() {
       ]);
     }
   };
+  const deleteItem = (id) => {
+    setItems([...items.filter((i) => i.id !== id)]);
+  };
 
   return (
     <UserContextProvider>
       <div className="app">
         <LeftPanel>
           <Header />
-          <JournalAddButton />
+          <JournalAddButton clearForm={() => setSelectedItem(null)} />
           <JournalList items={mapItems(items)} setItem={setSelectedItem} />
         </LeftPanel>
         <Body>
-          <JournalForm onSubmit={addItem} data={selectedItem} />
+          <JournalForm
+            onSubmit={addItem}
+            onDelete={deleteItem}
+            data={selectedItem}
+          />
         </Body>
       </div>
     </UserContextProvider>
