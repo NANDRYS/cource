@@ -13,7 +13,7 @@ function JournalForm({ onSubmit }) {
   const titleRef = useRef();
   const dateRef = useRef();
   const postRef = useRef();
-const { userId} = useContext(UserContext)
+  const { userId } = useContext(UserContext);
 
   const focusValid = (isValid) => {
     switch (true) {
@@ -48,6 +48,13 @@ const { userId} = useContext(UserContext)
     }
   }, [isFormReadyToSubmit, values, onSubmit]);
 
+  useEffect(() => {
+    dispatchForm({
+      type: "SET_VALUE",
+      payload: { userId },
+    });
+  }, [userId]);
+
   const onChanges = (e) => {
     dispatchForm({
       type: "SET_VALUE",
@@ -64,7 +71,6 @@ const { userId} = useContext(UserContext)
 
   return (
     <form className={styles["journal-form"]} onSubmit={addJurnalItem}>
-      {userId}
       <div>
         <Input
           onChange={onChanges}
@@ -126,7 +132,7 @@ const { userId} = useContext(UserContext)
           [styles["invalid"]]: !isValid.post,
         })}
       ></textarea>
-      <Button text="Сохранить" />
+      <Button>Сохранить</Button>
     </form>
   );
 }
