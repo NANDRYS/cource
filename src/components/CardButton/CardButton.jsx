@@ -1,11 +1,11 @@
- import './CardButton.css'
+import "./CardButton.css";
 
- function CardButton({children, className}) {
+function CardButton({ children, className, ...props }) {
+  return (
+    <button {...props} className={`card-button ${className ? className : ""}`}>
+      {children}
+    </button>
+  );
+}
 
-   return (
-      <button className={`card-button ${className ? className: ''}`}>
-         {children}
-      </button>)
-   }
-
- export default CardButton
+export default CardButton;
